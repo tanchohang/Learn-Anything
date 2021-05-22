@@ -57,7 +57,7 @@ class LandingScreen extends StatelessWidget {
                   ),
                   OutlinedButton(
                     onLongPress: () {},
-                    child: Text('SIGN UP',
+                    child: Text('LOGIN',
                         style: TextStyle(
                             color: Color(0xFFF7F7F7),
                             fontSize: 16,

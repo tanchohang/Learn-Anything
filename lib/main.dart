@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:learn_anything/components/AuthWrapper.dart';
 import 'package:learn_anything/screen/create_task.dart';
 import 'package:learn_anything/screen/home.dart';
 import 'package:learn_anything/screen/landing.dart';
+import 'package:learn_anything/screen/profile.dart';
 import 'package:learn_anything/screen/task.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -21,10 +25,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
       ),
       routes: {
-        '/': (context) => HomeScreen(),
+        '/': (context) => AuthWrapper(),
         '/home': (context) => HomeScreen(),
         '/task': (context) => TaskScreen(),
-        '/create-task': (context) => CreateTaskScreen()
+        '/create-task': (context) => CreateTaskScreen(),
+        '/profile': (context) => ProfileScreen()
       },
     );
   }

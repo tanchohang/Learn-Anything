@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:learn_anything/screen/create_task.dart';
+import 'package:learn_anything/screen/home.dart';
 import 'package:learn_anything/screen/landing.dart';
+import 'package:learn_anything/screen/task.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,11 +15,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Learn Anything',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
       ),
-      home: LandingScreen(),
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/home': (context) => HomeScreen(),
+        '/task': (context) => TaskScreen(),
+        '/create-task': (context) => CreateTaskScreen()
+      },
     );
   }
 }

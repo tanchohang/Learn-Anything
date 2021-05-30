@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:learn_anything/services/auth_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:learn_anything/main.dart';
 
-class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key key}) : super(key: key);
-
+class ProfileScreen extends ConsumerWidget {
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  AuthService authService = AuthService();
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final _authService = watch(authserviceProvider);
+    final _authState = watch(authStateProvider);
     return Container(
       color: Color(0xFFe8edf5),
       child: Container(
@@ -20,8 +15,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Color(0xFFF15A42),
             textColor: Color(0xFFe8edf5),
             onPressed: () {
-              this.authService.logout();
-              Navigator.pushNamed(context, '/');
+              _authService.logout();
+              Navigator.pop(context);
             },
             child: Text('Logout'),
           ),

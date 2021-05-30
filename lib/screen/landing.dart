@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:learn_anything/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:learn_anything/main.dart';
 
-class LandingScreen extends StatefulWidget {
-  const LandingScreen({Key key}) : super(key: key);
-
+class LandingScreen extends ConsumerWidget {
   @override
-  _LandingScreenState createState() => _LandingScreenState();
-}
+  Widget build(BuildContext context, ScopedReader watch) {
+    final _authService = watch(authserviceProvider);
 
-class _LandingScreenState extends State<LandingScreen> {
-  final AuthService authService = AuthService();
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       color: Color(0xFFFac92c),
       child: Container(
@@ -67,10 +60,8 @@ class _LandingScreenState extends State<LandingScreen> {
                   ),
                   MaterialButton(
                     color: Color(0xFFF15A42),
-                    onLongPress: () async {
-                      UserCredential user =
-                          await this.authService.signInWithGoogle();
-                      Navigator.pushNamed(context, '/');
+                    onPressed: () async {
+                      _authService.signInWithGoogle();
                     },
                     child: Text('LOGIN WITH GOOGLE',
                         style: TextStyle(
@@ -80,7 +71,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   ),
                   MaterialButton(
                     color: Color(0xFF2178AE),
-                    onLongPress: () {},
+                    onPressed: () {},
                     child: Text('LOGIN WITH FACEBOOK',
                         style: TextStyle(
                             color: Color(0xFFF7F7F7),

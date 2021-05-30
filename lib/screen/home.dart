@@ -1,57 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:learn_anything/components/TaskCard.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:learn_anything/components/task_card.dart';
+import 'package:learn_anything/screen/calender.dart';
+import 'package:learn_anything/screen/profile.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key key}) : super(key: key);
+import 'create_task/create_task.dart';
 
+final selectedIndexProvider = StateProvider((ref) => 0);
+
+class HomeScreen extends ConsumerWidget {
+  final List<Widget> screen = <Widget>[
+    Body(),
+    Calender(),
+    Text('message'),
+  ];
   @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+        leading: Builder(
+            builder: (context) => IconButton(
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                icon: const Icon(Icons.account_circle))),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
         ],
       ),
-      body: DefaultTextStyle(
-        style: TextStyle(color: Colors.black),
-        child: Container(
-          width: 300,
-          padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
-          color: Color(0xFFe8edf5),
-          child: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(
-                  'Hi,',
-                  style: TextStyle(fontSize: 24),
-                  textAlign: TextAlign.left,
-                ),
-                Container(
-                  child: Column(
-                    children: [
-                      Text('Current Learning',
-                          style: TextStyle(fontSize: 24),
-                          textAlign: TextAlign.left),
-                      TaskCard()
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: watch(selectedIndexProvider).state == 1
+          ? FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateTaskScreen()));
+              },
+            )
+          : null,
+      drawer: MyDrawer(),
+      body: screen[watch(selectedIndexProvider).state],
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.amberAccent,
-        unselectedItemColor: Color(0xFF979797),
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.lightBlue,
+        unselectedItemColor: Color(0xFFF7F7F7),
         backgroundColor: Color(0XFFF15A42),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -59,45 +50,83 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_outlined), label: "Calender"),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_outlined),
-            label: "Add",
-          ),
-          BottomNavigationBarItem(
               icon: Icon(Icons.message_outlined), label: "Message"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_box_outlined), label: "Profile"),
         ],
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() {
-          _selectedIndex = index;
-          switch (index) {
-            case 0:
-              {
-                Navigator.pushNamed(context, '/home');
-              }
-              break;
-            case 1:
-              {
-                Navigator.pushNamed(context, '/task');
-              }
-              break;
-            case 2:
-              {
-                Navigator.pushNamed(context, '/create-task');
-              }
-              break;
-            case 3:
-              {
-                // Navigator.pushNamed(context, '/message');
-              }
-              break;
-            case 4:
-              {
-                Navigator.pushNamed(context, '/profile');
-              }
-              break;
-          }
-        }),
+        currentIndex: watch(selectedIndexProvider).state,
+        onTap: (index) => context.read(selectedIndexProvider).state = index,
+      ),
+    );
+  }
+}
+
+class MyDrawer extends StatelessWidget {
+  const MyDrawer({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text('Drawer Header'),
+          ),
+          ListTile(
+            title: Text('got to profile'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Body extends StatelessWidget {
+  const Body({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // final tasks = context.watch<List<Task>>();
+    return SizedBox.expand(
+      child: DefaultTextStyle(
+        style: TextStyle(color: Colors.black),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+          color: Color(0xFFe8edf5),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                  'Hi,',
+                  style: TextStyle(fontSize: 24, color: Colors.red[300]),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Current Learning',
+                          style: TextStyle(fontSize: 24),
+                          textAlign: TextAlign.left),
+                      Container(
+                        child: TaskCard(),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

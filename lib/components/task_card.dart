@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn_anything/screen/task.dart';
 
 class TaskCard extends StatelessWidget {
   const TaskCard({Key key}) : super(key: key);
@@ -7,7 +8,8 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/task');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => TaskScreen()));
       },
       child: Container(
         // decoration: BoxDecoration(

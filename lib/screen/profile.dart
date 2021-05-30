@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:learn_anything/main.dart';
+import 'package:learn_anything/services/auth_service.dart';
 
 class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _authService = watch(authserviceProvider);
-    final _authState = watch(authStateProvider);
     return Container(
       color: Color(0xFFe8edf5),
       child: Container(

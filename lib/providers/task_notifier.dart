@@ -1,22 +1,23 @@
-import 'dart:collection';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_anything/models/task.dart';
+import 'package:learn_anything/services/taskdb_service.dart';
 
-class TaskList extends StateNotifier<List<Task>> {
-  TaskList([List<Task> initialTasks]) : super(initialTasks);
+final tasksNotifierProvider = StateNotifierProvider((ref) => TasksNotifier());
 
-  List<Task> _taskList = [];
+class TasksNotifier extends StateNotifier<List<Task>> {
+  TasksNotifier() : super([]);
 
-  Future create(Task task, String uid) async {
-    // state = [...state, Task(name:)];
+  void create(Task task) {
+    state = [...state, task];
   }
 
-  Stream<List<Task>> read(String uid) {}
+  // Future<Task> getById(String id) async {}
 
-  Future<Task> getById(String id) async {}
+  void update(Task task, String id) {}
 
-  Future updateProduct(Task task, String id) async {}
-
-  Future delete(String id) async {}
+  void delete(String id) {
+    for (final task in state) {
+      // if(task)
+    }
+  }
 }

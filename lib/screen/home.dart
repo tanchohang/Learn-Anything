@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_anything/components/task_card.dart';
 import 'package:learn_anything/screen/calender.dart';
 import 'package:learn_anything/screen/profile.dart';
+import 'package:learn_anything/services/taskdb_service.dart';
 
 import 'create_task/create_task.dart';
 
@@ -88,46 +89,33 @@ class MyDrawer extends StatelessWidget {
   }
 }
 
-class Body extends StatelessWidget {
-  const Body({Key key}) : super(key: key);
-
+class Body extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    // final tasks = context.watch<List<Task>>();
-    return SizedBox.expand(
-      child: DefaultTextStyle(
-        style: TextStyle(color: Colors.black),
-        child: Container(
-          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-          color: Color(0xFFe8edf5),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(
-                  'Hi,',
-                  style: TextStyle(fontSize: 24, color: Colors.red[300]),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Current Learning',
-                          style: TextStyle(fontSize: 24),
-                          textAlign: TextAlign.left),
-                      Container(
-                        child: TaskCard(),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+  Widget build(BuildContext context, watch) {
+    return Column(
+      children: [
+        Container(
+          child: Text('Hi'),
         ),
-      ),
+        Container(
+          child: Text('In Progress'),
+        ),
+        Container(
+            child: watch(taskStreamProvider).when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (err, stack) => Center(child: Text(err.toString())),
+                data: (tasks) {
+                  return Container(
+                    height: 180,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: tasks.length,
+                        itemBuilder: (_, index) {
+                          return TaskCard(task: tasks[index]);
+                        }),
+                  );
+                }))
+      ],
     );
   }
 }

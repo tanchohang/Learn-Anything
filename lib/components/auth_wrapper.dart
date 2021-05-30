@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:learn_anything/main.dart';
 import 'package:learn_anything/screen/home.dart';
 import 'package:learn_anything/screen/landing.dart';
+import 'package:learn_anything/services/auth_service.dart';
 
 class AuthWrapper extends ConsumerWidget {
   @override

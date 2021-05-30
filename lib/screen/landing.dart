@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:learn_anything/main.dart';
+import 'package:learn_anything/services/auth_service.dart';
 
 class LandingScreen extends ConsumerWidget {
   @override

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:learn_anything/models/task.dart';
 import 'package:learn_anything/screen/task.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({Key key}) : super(key: key);
+  final Task task;
+  const TaskCard({Key key, this.task}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class TaskCard extends StatelessWidget {
               children: [Icon(Icons.pie_chart_outline)],
             ),
             Container(
-              child: Text('title'),
+              child: Text(task.name),
             ),
             Container(
               child: Container(
